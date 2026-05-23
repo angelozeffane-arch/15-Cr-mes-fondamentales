@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>15 Crèmes Fondamentales — MOF Moderne</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F5F0E8;
+    --dark: #1A1410;
+    --brown: #3D2B1F;
+    --gold: #C9A84C;
+    --gold-light: #E8D5A0;
+    --rust: #8B4513;
+    --smoke: #E8E2D9;
+    --text: #2C2018;
+    --muted: #8A7B6E;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    color: var(--text);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--dark);
+    padding: 3rem 2rem 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 40px,
+      rgba(201,168,76,0.04) 40px,
+      rgba(201,168,76,0.04) 80px
+    );
+  }
+  .header-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.8rem);
+    color: var(--cream);
+    font-weight: 700;
+    line-height: 1.1;
+  }
+  header h1 em {
+    color: var(--gold);
+    font-style: italic;
+    font-weight: 400;
+  }
+  .header-sub {
+    font-size: 1.1rem;
+    color: var(--gold-light);
+    margin-top: 0.8rem;
+    font-style: italic;
+    font-weight: 300;
+  }
+  .header-line {
+    width: 60px;
+    height: 1px;
+    background: var(--gold);
+    margin: 1.5rem auto 0;
+  }
+
+  /* ── GRID INDEX ── */
+  .index-section {
+    padding: 3rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .section-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .recipe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1px;
+    background: rgba(61,43,31,0.15);
+    border: 1px solid rgba(61,43,31,0.15);
+  }
+  .recipe-card {
+    background: var(--cream);
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .recipe-card:hover {
+    background: var(--dark);
+  }
+  .recipe-card:hover .card-num,
+  .recipe-card:hover .card-title,
+  .recipe-card:hover .card-tag,
+  .recipe-card:hover .card-desc { color: var(--cream); }
+  .recipe-card:hover .card-tag { background: var(--gold); color: var(--dark); }
+  .recipe-card:hover .card-arrow { opacity: 1; color: var(--gold); }
+
+  .card-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--dark);
+    margin-bottom: 0.5rem;
+  }
+  .card-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.5;
+    font-style: italic;
+    margin-bottom: 0.8rem;
+  }
+  .card-tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: var(--smoke);
+    color: var(--muted);
+    padding: 0.2rem 0.5rem;
+    border-radius: 2px;
+  }
+  .card-arrow {
+    position: absolute;
+    bottom: 1.2rem;
+    right: 1.2rem;
+    font-size: 1.1rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  /* ── RECIPE DETAIL ── */
+  #detail-view {
+    display: none;
+    min-height: 100vh;
+  }
+  .detail-header {
+    background: var(--dark);
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .back-btn {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--cream);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: all 0.2s;
+  }
+  .back-btn:hover { background: var(--gold); border-color: var(--gold); color: var(--dark); }
+
+  .detail-header-info { flex: 1; }
+  .detail-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--gold);
+    letter-spacing: 0.3em;
+    margin-bottom: 0.4rem;
+  }
+  .detail-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.4rem, 3vw, 2.2rem);
+    color: var(--cream);
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  .detail-desc {
+    font-style: italic;
+    color: var(--gold-light);
+    margin-top: 0.4rem;
+    font-size: 0.95rem;
+  }
+
+  .detail-body {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 3rem;
+  }
+  @media(max-width:700px) {
+    .detail-body { grid-template-columns: 1fr; gap: 2rem; }
+  }
+
+  /* Ingredients */
+  .ingredients-panel h3 {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+  }
+  .servings-control {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+    padding: 0.8rem;
+    background: var(--smoke);
+    border-radius: 4px;
+  }
+  .servings-control label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    flex: 1;
+  }
+  .servings-btn {
+    background: var(--dark);
+    color: var(--cream);
+    border: none;
+    width: 28px; height: 28px;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+    border-radius: 2px;
+  }
+  .servings-btn:hover { background: var(--gold); color: var(--dark); }
+  #servings-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.9rem;
+    font-weight: 500;
+    min-width: 30px;
+    text-align: center;
+  }
+
+  .ingredient-list { list-style: none; }
+  .ingredient-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(61,43,31,0.1);
+    gap: 1rem;
+  }
+  .ingredient-item:last-child { border-bottom: none; }
+  .ing-name {
+    font-size: 0.95rem;
+    color: var(--text);
+    flex: 1;
+    line-height: 1.4;
+  }
+  .ing-amount {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--gold);
+    font-weight: 500;
+    white-space: nowrap;
+    background: rgba(201,168,76,0.1);
+    padding: 0.15rem 0.4rem;
+    border-radius: 2px;
+  }
+
+  /* Notes */
+  .notes-box {
+    margin-top: 1.5rem;
+    background: var(--dark);
+    padding: 1.2rem;
+    border-radius: 4px;
+  }
+  .notes-box h4 {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.8rem;
+  }
+  .notes-box p {
+    font-size: 0.82rem;
+    color: var(--gold-light);
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  /* Steps */
+  .steps-panel h3 {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+  }
+  .step-item {
+    border: 1px solid rgba(61,43,31,0.12);
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .step-item.active { border-color: var(--gold); }
+  .step-item.done { border-color: rgba(61,43,31,0.08); background: rgba(61,43,31,0.02); }
+  .step-item.done .step-num { background: #4CAF50; color: white; }
+
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.9rem 1rem;
+    cursor: pointer;
+    background: white;
+    transition: background 0.15s;
+  }
+  .step-item.active .step-header { background: rgba(201,168,76,0.08); }
+  .step-item.done .step-header { background: rgba(61,43,31,0.03); }
+
+  .step-num {
+    width: 28px; height: 28px;
+    background: var(--dark);
+    color: var(--cream);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 500;
+    flex-shrink: 0;
+    transition: background 0.2s;
+  }
+  .step-title-text {
+    flex: 1;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--dark);
+  }
+  .step-item.done .step-title-text { text-decoration: line-through; color: var(--muted); }
+  .timer-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    background: rgba(201,168,76,0.15);
+    color: var(--rust);
+    padding: 0.15rem 0.4rem;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+
+  .step-body {
+    padding: 0.9rem 1rem 1rem 3.5rem;
+    background: white;
+    border-top: 1px solid rgba(61,43,31,0.06);
+    display: none;
+  }
+  .step-item.active .step-body { display: block; }
+  .step-body p {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: var(--text);
+    margin-bottom: 1rem;
+  }
+
+  /* Timer */
+  .timer-section {
+    background: var(--dark);
+    border-radius: 6px;
+    padding: 1rem;
+    text-align: center;
+  }
+  .timer-display {
+    font-family: 'DM Mono', monospace;
+    font-size: 2.2rem;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    margin: 0.3rem 0;
+  }
+  .timer-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.8rem;
+  }
+  .timer-controls {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .timer-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: none;
+    color: var(--cream);
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+  }
+  .timer-btn:hover, .timer-btn.primary { background: var(--gold); border-color: var(--gold); color: var(--dark); }
+  .timer-btn.danger { border-color: rgba(200,80,80,0.4); }
+  .timer-btn.danger:hover { background: #c85050; border-color: #c85050; }
+  .timer-progress {
+    height: 3px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    margin-top: 0.8rem;
+    overflow: hidden;
+  }
+  .timer-progress-bar {
+    height: 100%;
+    background: var(--gold);
+    width: 0%;
+    transition: width 1s linear;
+    border-radius: 2px;
+  }
+
+  .step-done-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.5rem 1.2rem;
+    background: var(--dark);
+    color: var(--cream);
+    border: none;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+    display: block;
+    margin-top: 0.8rem;
+  }
+  .step-done-btn:hover { background: #4CAF50; }
+
+  /* Nav between recipes */
+  .recipe-nav {
+    max-width: 900px;
+    margin: 0 auto 3rem;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .recipe-nav-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.6rem 1.2rem;
+    background: var(--dark);
+    color: var(--cream);
+    border: none;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background 0.2s;
+  }
+  .recipe-nav-btn:hover { background: var(--gold); color: var(--dark); }
+  .recipe-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  /* Toast */
+  #toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--dark);
+    color: var(--gold);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    border: 1px solid var(--gold);
+    z-index: 1000;
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    white-space: nowrap;
+  }
+  #toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* Footer */
+  footer {
+    background: var(--dark);
+    text-align: center;
+    padding: 2rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  footer span { color: var(--gold); }
+
+  @media(max-width:600px) {
+    .detail-body { padding: 1.5rem 1rem; }
+    .recipe-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ INDEX VIEW ══════════════ -->
+<div id="index-view">
+  <header>
+    <div class="header-label">Pâtisserie de Haute Précision</div>
+    <h1>15 Crèmes <em>Fondamentales</em></h1>
+    <div class="header-sub">Version MOF Moderne — Process & Températures</div>
+    <div class="header-line"></div>
+  </header>
+
+  <section class="index-section">
+    <div class="section-title">Sélectionner une recette</div>
+    <div class="recipe-grid" id="recipe-grid"></div>
+  </section>
+</div>
+
+<!-- ══════════════ DETAIL VIEW ══════════════ -->
+<div id="detail-view">
+  <div class="detail-header">
+    <button class="back-btn" onclick="showIndex()">← Retour</button>
+    <div class="detail-header-info">
+      <div class="detail-num" id="d-num"></div>
+      <div class="detail-title" id="d-title"></div>
+      <div class="detail-desc" id="d-desc"></div>
+    </div>
+  </div>
+
+  <div class="detail-body">
+    <div class="ingredients-panel">
+      <h3>Ingrédients</h3>
+      <div class="servings-control">
+        <label>Portions ×</label>
+        <button class="servings-btn" onclick="changeServings(-1)">−</button>
+        <span id="servings-val">1</span>
+        <button class="servings-btn" onclick="changeServings(1)">+</button>
+      </div>
+      <ul class="ingredient-list" id="ing-list"></ul>
+      <div class="notes-box" id="notes-box" style="display:none">
+        <h4>Notes MOF</h4>
+        <p id="notes-text"></p>
+      </div>
+    </div>
+
+    <div class="steps-panel">
+      <h3>Étapes</h3>
+      <div id="steps-list"></div>
+    </div>
+  </div>
+
+  <div class="recipe-nav">
+    <button class="recipe-nav-btn" id="prev-btn" onclick="navigateRecipe(-1)">← Recette précédente</button>
+    <button class="recipe-nav-btn" id="next-btn" onclick="navigateRecipe(1)">Recette suivante →</button>
+  </div>
+</div>
+
+<div id="toast">✓ Étape marquée comme terminée</div>
+
+<footer>
+  <span>15 Crèmes MOF Modernes</span> — Fiches Techniques Haute Pâtisserie
+</footer>
+
+<script>
+const RECIPES = [
+  {
+    num: "01",
+    title: "Crémeux Vanille",
+    shortTitle: "Crémeux Vanille",
+    tag: "Base universelle",
+    desc: "Remplace la pâtissière classique. Texture crème brûlée coulante, brillance naturelle.",
+    fullDesc: "Texture de crème brûlée coulante, pas d'amidon visible, pas d'effet colle. Brillance naturelle.",
+    ingredients: [
+      { name: "Lait entier", amount: 200, unit: "g" },
+      { name: "Crème 35%", amount: 150, unit: "g" },
+      { name: "Gousses de vanille Tahiti (infusion 24h à froid)", amount: 2, unit: "" },
+      { name: "Jaunes d'œufs", amount: 80, unit: "g" },
+      { name: "Sucre", amount: 60, unit: "g" },
+      { name: "Fécule de maïs", amount: 12, unit: "g" },
+      { name: "Gélatine 200 bloom (essorée)", amount: 3, unit: "g" },
+    ],
+    steps: [
+      { title: "Infusion à froid", text: "Fendre et gratter les gousses de vanille dans lait + crème. Filmer et infuser 24h au réfrigérateur. L'infusion froide extrait 3× plus d'arôme qu'à chaud.", timer: 86400 },
+      { title: "Blanchir les jaunes", text: "Blanchir jaunes + sucre + fécule tamisée au fouet jusqu'à mélange homogène et légèrement mousseux.", timer: 0 },
+      { title: "Cuire le crémeux", text: "Chauffer le lait vanillé filtré au chinois fin. Verser 1/3 sur le mélange jaunes, fouetter, reverser dans la casserole. Cuire à feu moyen en remuant constamment jusqu'à 84°C exactement.", timer: 300 },
+      { title: "Incorporer la gélatine", text: "Hors du feu, incorporer la gélatine réhydratée 10 min dans eau froide et essorée. Mélanger jusqu'à dissolution complète.", timer: 0 },
+      { title: "Émulsionner au mixeur", text: "Mixer 3 min au mixeur plongeant SANS lever la tête pour ne pas incorporer d'air. C'est cette étape qui crée la texture soyeuse et la brillance.", timer: 180 },
+      { title: "Couler et cristalliser", text: "Couler immédiatement dans les moules. Filmer au contact sans laisser d'air. Laisser cristalliser au réfrigérateur minimum 6h.", timer: 21600 },
+    ],
+    notes: "VERSION MONTÉE : Ajouter 300g crème 35% froide après émulsion → laisser 12h au froid → monter au fouet vitesse moyenne jusqu'à texture mousse ferme.\n\nRÈGLE D'OR : Ne jamais dépasser 84°C sinon les jaunes coagulent. Conservation : 72h filmé au contact."
+  },
+  {
+    num: "02",
+    title: "Ganache Montée Chocolat Lait",
+    shortTitle: "Ganache Montée Lait",
+    tag: "Poche · Entremets",
+    desc: "Texture nuageuse, fond en bouche, tenue 48h. La vraie ganache montée des grands chefs.",
+    fullDesc: "Remplace la ganache classique dense. Texture nuageuse, fond en bouche, se tient en poche 48h.",
+    ingredients: [
+      { name: "Chocolat lait Valrhona Jivara 40%", amount: 200, unit: "g" },
+      { name: "Crème 35% chaude", amount: 100, unit: "g" },
+      { name: "Glucose", amount: 15, unit: "g" },
+      { name: "Beurre doux", amount: 20, unit: "g" },
+      { name: "Crème 35% froide (lendemain)", amount: 300, unit: "g" },
+    ],
+    steps: [
+      { title: "Fondre le chocolat", text: "Fondre le chocolat au bain-marie ou micro-ondes par tranches de 30 sec. Fondu à 45°C maximum, lisse et brillant.", timer: 0 },
+      { title: "Émulsionner la ganache", text: "Chauffer crème chaude + glucose à 80°C. Verser en 3 fois sur le chocolat fondu en faisant des petits cercles énergiques au centre avec une maryse — jamais en une seule fois.", timer: 0 },
+      { title: "Incorporer le beurre", text: "Quand la ganache atteint 35°C, incorporer le beurre en cubes. Mélanger jusqu'à fonte complète. Apporte brillance et onctuosité.", timer: 0 },
+      { title: "Repos 12h obligatoire", text: "Ajouter la crème froide en une fois. Mélanger à la maryse. Filmer au contact. Réserver 12h minimum au réfrigérateur. Étape la plus importante — ne jamais sauter.", timer: 43200 },
+      { title: "Monter la ganache", text: "Monter la ganache froide au fouet à vitesse MOYENNE jusqu'à texture mousse ferme et bec d'oiseau. Doit tripler de volume. S'arrêter dès que la texture est atteinte.", timer: 180 },
+      { title: "Dresser à la poche", text: "Dresser immédiatement à la poche. Conserver les pièces dressées 48h maximum au réfrigérateur.", timer: 0 },
+    ],
+    notes: "RÈGLE ABSOLUE : Jamais à grande vitesse — la ganache tranche. Vitesse moyenne uniquement.\n\nSI ELLE TRANCHE : Chauffer légèrement le fond du bol 2 secondes au chalumeau → refouetter. Ça revient toujours.\n\nVARIANTES : Caramélia (caramel) / Azélia (praliné noisette)."
+  },
+  {
+    num: "03",
+    title: "Crème au Beurre Italienne",
+    shortTitle: "Beurre Italienne",
+    tag: "Fraisier · Opéra",
+    desc: "Jamais trop sucrée, jamais qui tranche. Le dressage millimétrique des concours.",
+    fullDesc: "La seule crème au beurre qui ne tranche pas, qui ne sucre pas, qui se dresse au millimètre.",
+    ingredients: [
+      { name: "Blancs d'œufs", amount: 120, unit: "g" },
+      { name: "Sucre", amount: 240, unit: "g" },
+      { name: "Eau", amount: 60, unit: "g" },
+      { name: "Beurre AOP Poitou-Charentes tempéré à 20°C exactement", amount: 400, unit: "g" },
+    ],
+    steps: [
+      { title: "Cuire le sucre à 121°C", text: "Cuire sucre + eau à 121°C exactement dans une casserole à fond épais. Ne pas remuer pendant la cuisson. Nettoyer les bords à l'eau froide avec un pinceau.", timer: 480 },
+      { title: "Réaliser la meringue italienne", text: "Quand le sucre est à 115°C, monter les blancs au batteur jusqu'à texture mousseuse. Quand le sucre atteint 121°C, verser en filet très fin sur les blancs mousseux en continuant à fouetter.", timer: 0 },
+      { title: "Monter jusqu'à refroidissement", text: "Fouetter à vitesse maximum jusqu'à refroidissement complet. Le bol doit être à 25°C au toucher. La meringue doit être brillante, ferme et lisse.", timer: 600 },
+      { title: "Incorporer le beurre progressivement", text: "Passer à vitesse moyenne. Incorporer le beurre en petits morceaux UN PAR UN. La crème peut sembler trancher au 2/3 du beurre — c'est normal, continuer.", timer: 480 },
+      { title: "Monter jusqu'à texture parfaite", text: "Augmenter à vitesse moyenne-haute. La crème doit devenir lisse, brillante, blanche et aérée. Tenir en bec d'oiseau ferme.", timer: 480 },
+      { title: "Aromatiser et dresser", text: "Aromatiser selon usage (praliné, pistache, café, zestes) puis dresser immédiatement à la poche. Stocker les pièces dressées au froid 15 min avant service.", timer: 0 },
+    ],
+    notes: "CLÉ ABSOLUE : Le beurre DOIT être à 20°C exactement — tempérer 1h à l'avance hors du frigo.\n\nSI ÇA TRANCHE : Chalumeau 2 sec sur le bol → refouetter. Si trop liquide : 5 min au froid → refouetter.\n\nConservation : 1 semaine au froid. Sortir 30 min avant et refouetter légèrement."
+  },
+  {
+    num: "04",
+    title: "Chantilly Mascarpone",
+    shortTitle: "Chantilly Mascarpone",
+    tag: "Vacherin · Fraisier",
+    desc: "Tenue 48h sans gélatine, texture veloutée, goût lacté profond. La chantilly qui ne rend pas d'eau.",
+    fullDesc: "Tenue 48h sans gélatine, texture veloutée, goût lacté profond. La chantilly des boutiques premium.",
+    ingredients: [
+      { name: "Crème 35% très froide", amount: 300, unit: "g" },
+      { name: "Mascarpone", amount: 150, unit: "g" },
+      { name: "Sucre glace tamisé", amount: 35, unit: "g" },
+      { name: "Extrait de vanille naturel", amount: 5, unit: "g" },
+    ],
+    steps: [
+      { title: "Préparer le matériel froid", text: "Mettre le bol et le fouet au congélateur 15 min. La crème doit être à 4°C. Le froid est la condition sine qua non.", timer: 900 },
+      { title: "Détendre le mascarpone", text: "Dans le bol froid, détendre le mascarpone seul au fouet à vitesse lente pendant 30 secondes. Il doit être souple sans être liquide. Ne pas sauter cette étape sinon des grumeaux se forment.", timer: 30 },
+      { title: "Incorporer la crème", text: "Ajouter la crème froide progressivement en filet sur le mascarpone détendu. Commencer à fouetter à vitesse lente 30 sec, puis vitesse moyenne.", timer: 0 },
+      { title: "Monter jusqu'à bec d'oiseau", text: "Ajouter sucre glace + vanille quand la crème commence à épaissir. Continuer à vitesse moyenne jusqu'à bec d'oiseau ferme. Texture lisse, brillante, parfaitement pochable.", timer: 180 },
+      { title: "Dresser immédiatement", text: "Dresser immédiatement à la poche. Si pas utilisé de suite, filmer et réserver au froid 30 min maximum avant de dresser.", timer: 0 },
+    ],
+    notes: "RÈGLE DES 3 FROIDS : Bol au congélateur 15 min, crème à 4°C, mascarpone sorti 5 min avant (juste pour le détendre).\n\nJAMAIS à grande vitesse — la chantilly graisse et devient du beurre en secondes.\n\nAROMATISATION : Yuzu / citron vert / passion / praliné / café — avec le sucre glace."
+  },
+  {
+    num: "05",
+    title: "Crémeux Citron Émulsionné",
+    shortTitle: "Crémeux Citron Hermé",
+    tag: "Tarte · Insert",
+    desc: "Technique Pierre Hermé. Texture miroir, acidité maîtrisée, zéro effet caillé.",
+    fullDesc: "Aucun effet caillé, texture lisse comme un beurre, brillance miroir. La technique Hermé.",
+    ingredients: [
+      { name: "Jus de citron jaune frais", amount: 100, unit: "g" },
+      { name: "Citrons non traités (zestes)", amount: 3, unit: "" },
+      { name: "Sucre", amount: 150, unit: "g" },
+      { name: "Œufs entiers (3 œufs)", amount: 150, unit: "g" },
+      { name: "Beurre doux froid en cubes", amount: 150, unit: "g" },
+    ],
+    steps: [
+      { title: "Infuser les zestes dans le sucre", text: "Zester les citrons directement sur le sucre dans un cul-de-poule. Frotter les zestes dans le sucre avec les doigts pendant 2 min. Le sucre devient humide et les huiles essentielles sont libérées.", timer: 120 },
+      { title: "Mélanger à froid", text: "Ajouter les œufs entiers + jus de citron au mélange sucre-zestes. Fouetter à froid jusqu'à homogénéité complète.", timer: 0 },
+      { title: "Cuire à 83°C", text: "Cuire au bain-marie ou à feu doux sans cesser de remuer avec une maryse jusqu'à 83°C exactement. La crème doit napper le dos d'une cuillère. Retirer immédiatement du feu.", timer: 420 },
+      { title: "Émulsionner le beurre au mixeur", text: "Chinoiser dans un pichet haut. Laisser refroidir à 60°C. Ajouter le beurre en cubes. Mixer au mixeur plongeant 3 min SANS lever la tête. La crème devient brillante, lisse comme un miroir.", timer: 180 },
+      { title: "Couler et cristalliser", text: "Couler immédiatement dans les fonds de tarte ou moules d'insert. Filmer au contact. Réfrigérer minimum 3h avant utilisation.", timer: 10800 },
+    ],
+    notes: "LA DIFFÉRENCE ABSOLUE : Le mixeur plongeant crée l'émulsion parfaite beurre/eau du curd. Sans mixeur, le beurre se sépare.\n\nNE JAMAIS LEVER LA TÊTE du mixeur — les bulles d'air cassent la brillance.\n\nVERSION YUZU : 60g jus yuzu + 40g jus citron. Floral et complexe."
+  },
+  {
+    num: "06",
+    title: "Mousse Chocolat Noir Émulsionnée",
+    shortTitle: "Mousse Choco Sans Œuf",
+    tag: "Entremets · Bûche",
+    desc: "Zéro œuf cru, sécurité alimentaire totale. Intensité chocolat pure, texture onctueuse.",
+    fullDesc: "Sécurité alimentaire totale, zéro œuf cru. Texture onctueuse et intense, chocolat pur sans lourdeur.",
+    ingredients: [
+      { name: "Chocolat noir Valrhona Guanaja 70%", amount: 200, unit: "g" },
+      { name: "Crème 35% chaude", amount: 150, unit: "g" },
+      { name: "Crème 35% froide montée mousseuse (pas ferme)", amount: 350, unit: "g" },
+    ],
+    steps: [
+      { title: "Monter la crème mousseuse", text: "Monter la crème froide en texture mousseuse — pas ferme, comme une chantilly à mi-chemin. Réserver au froid.", timer: 120 },
+      { title: "Émulsionner la ganache", text: "Fondre le chocolat au bain-marie à 45°C. Chauffer la crème chaude à 80°C. Verser en 3 fois sur le chocolat en émulsionnant avec une maryse au centre. Ganache lisse et brillante.", timer: 0 },
+      { title: "Refroidir à 35°C", text: "Laisser la ganache refroidir à 35°C exactement avec un thermomètre. C'est la température critique qui garantit la texture finale.", timer: 300 },
+      { title: "Incorporer la crème montée", text: "Incorporer 1/3 de la crème montée dans la ganache avec une maryse — gestes circulaires énergiques. Puis le reste en 2 fois avec des gestes enveloppants délicats.", timer: 0 },
+      { title: "Couler et surgeler", text: "Couler immédiatement dans les cercles ou moules. Lisser à la spatule. Surgeler 2h minimum. Ne jamais laisser cristalliser à température ambiante.", timer: 7200 },
+    ],
+    notes: "TEXTURE CIBLE de la crème montée : mousseuse, pas ferme. Si trop ferme → mousse sèche. Si trop liquide → s'affaisse.\n\nTEMPÉRATURE CRITIQUE : ganache à 35°C max avant incorporation. Trop chaude = mousse qui fond.\n\nVARIANTES : Caraïbe 66% (moins amer) / Manjari 64% (fruité acidulé)."
+  },
+  {
+    num: "07",
+    title: "Mousseline Beurre Noisette",
+    shortTitle: "Mousseline Beurre Noisette",
+    tag: "Fraisier · Paris-Brest",
+    desc: "Profondeur aromatique incomparable. La mousseline signature des fraisiers de concours.",
+    fullDesc: "Le beurre noisette transforme la mousseline classique en une crème aromatique d'exception.",
+    ingredients: [
+      { name: "Crémeux vanille MOF refroidi à 20°C", amount: 400, unit: "g" },
+      { name: "Beurre AOP clarifié et cuit en noisette", amount: 220, unit: "g" },
+      { name: "Praliné amandes 60% (facultatif)", amount: 50, unit: "g" },
+    ],
+    steps: [
+      { title: "Cuire et refroidir le beurre noisette", text: "Cuire le beurre à feu moyen dans une casserole claire jusqu'à couleur ambre doré et odeur de noisette franche. Chinoiser immédiatement dans un bol froid. Refroidir à 20°C exactement.", timer: 2700 },
+      { title: "Foisonner le beurre noisette", text: "Foisonner le beurre noisette à 20°C au batteur vitesse moyenne jusqu'à ce qu'il blanchisse légèrement et prenne du volume. Environ 3 min. Texture de crème.", timer: 180 },
+      { title: "Incorporer le crémeux progressivement", text: "Incorporer le crémeux vanille à 20°C dans le beurre foisonné cuillereau par cuillereau à vitesse moyenne. Ne jamais tout verser d'un coup.", timer: 0 },
+      { title: "Monter et aromatiser", text: "Ajouter le praliné si souhaité. Monter l'ensemble à vitesse moyenne-haute jusqu'à texture légère, aérée et pochable.", timer: 120 },
+      { title: "Dresser à la poche", text: "Utiliser immédiatement à la poche. Pour le fraisier, dresser en spirale régulière. Stocker 1h au froid avant découpage.", timer: 0 },
+    ],
+    notes: "SECRET DU BEURRE NOISETTE : Cuire jusqu'à odeur noisette franche. Chinoiser aussitôt. Refroidir à 20°C exactement.\n\nFOISONNER le beurre noisette avant d'incorporer — étape que la plupart oublient et qui donne la légèreté.\n\nTEMPÉRATURE : Crémeux 20°C + beurre noisette 20°C = mariage parfait."
+  },
+  {
+    num: "08",
+    title: "Caramel Dressable Stable",
+    shortTitle: "Caramel Dressable",
+    tag: "Insert · Poche",
+    desc: "Se dresse à la poche, ne coule pas, reste souple à froid. Texture de confiserie premium.",
+    fullDesc: "Se dresse à la poche, ne coule pas, reste souple à froid. Brillance parfaite, zéro approximation.",
+    ingredients: [
+      { name: "Sucre", amount: 150, unit: "g" },
+      { name: "Glucose", amount: 30, unit: "g" },
+      { name: "Crème 35% chaude", amount: 170, unit: "g" },
+      { name: "Beurre doux en cubes", amount: 50, unit: "g" },
+      { name: "Fleur de sel", amount: 3, unit: "g" },
+    ],
+    steps: [
+      { title: "Caraméliser à 175°C", text: "Verser sucre + glucose dans une casserole à fond épais. Cuire à sec à feu moyen sans remuer jusqu'à 175°C (couleur ambré foncé, presque acajou). Surveiller constamment à partir de 160°C.", timer: 480 },
+      { title: "Décuire avec la crème chaude", text: "Décuire avec la crème chaude (80°C) versée en 3 fois avec une cuillère longue. Attention à l'ébullition violente. Mélanger entre chaque ajout jusqu'à dissolution complète.", timer: 0 },
+      { title: "Cuire à 108°C", text: "Remettre sur feu moyen et cuire à 108°C exactement en remuant constamment. C'est la température qui donne la texture dressable à la poche une fois refroidi.", timer: 300 },
+      { title: "Incorporer beurre et fleur de sel", text: "Retirer du feu à 50°C, incorporer le beurre en cubes et la fleur de sel. Mixer 2 min au mixeur plongeant pour émulsionner. Caramel brillant et lisse.", timer: 120 },
+      { title: "Refroidir et dresser", text: "Laisser refroidir à température ambiante jusqu'à texture de poche (environ 25°C). Pocher directement ou stocker au froid en pot hermétique.", timer: 1800 },
+    ],
+    notes: "POURQUOI LE GLUCOSE : Évite la recristallisation, garantit une texture souple même à froid. Sans glucose, le caramel durcit au réfrigérateur.\n\nCOULEUR CIBLE : Ambré foncé, presque brun acajou (175°C). Trop clair = sucré sans profondeur.\n\n108°C = texture dressable. 105°C = trop liquide. 112°C = trop ferme."
+  },
+  {
+    num: "09",
+    title: "Bavaroise Café Grand Cru",
+    shortTitle: "Bavaroise Café",
+    tag: "Entremets · Verrine",
+    desc: "Quasi aérienne. Arôme café intense par infusion froide 18h. La bavaroise contemporaine.",
+    fullDesc: "Quasi aérienne, arôme café grand cru par infusion froide 18h. Légère comme une mousse, intense comme un expresso.",
+    ingredients: [
+      { name: "Lait entier", amount: 200, unit: "g" },
+      { name: "Café de spécialité moulu grossièrement", amount: 40, unit: "g" },
+      { name: "Jaunes d'œufs", amount: 60, unit: "g" },
+      { name: "Sucre", amount: 50, unit: "g" },
+      { name: "Gélatine 200 bloom (essorée)", amount: 5, unit: "g" },
+      { name: "Crème 35% froide montée mousseuse", amount: 300, unit: "g" },
+    ],
+    steps: [
+      { title: "Infusion café à froid 18h", text: "Mélanger le café moulu dans le lait froid. Filmer et réserver 18h minimum au réfrigérateur. Filtrer au chinois étamine en pressant légèrement le marc. Récupérer 180g de lait café.", timer: 64800 },
+      { title: "Cuire l'anglaise café", text: "Blanchir jaunes + sucre au fouet. Chauffer le lait café à 80°C. Verser sur les jaunes. Remettre sur feu doux à 82°C (nappe la cuillère). Chinoiser.", timer: 300 },
+      { title: "Incorporer la gélatine et refroidir", text: "Hors du feu, incorporer la gélatine réhydratée. Refroidir l'anglaise à 25°C rapidement en bain-marie froid en remuant.", timer: 600 },
+      { title: "Incorporer la crème montée", text: "Monter la crème froide en texture mousseuse (pas ferme). Incorporer 1/3 énergiquement dans l'anglaise à 25°C. Puis le reste en 2 fois avec des gestes enveloppants.", timer: 0 },
+      { title: "Couler et surgeler", text: "Couler immédiatement dans les moules. Surgeler 3h minimum. Décongeler au réfrigérateur 4h avant service.", timer: 10800 },
+    ],
+    notes: "CAFÉ DE SPÉCIALITÉ UNIQUEMENT : Un café industriel donne une bavaroise amère et plate. Éthiopie Yirgacheffe, Kenya, Guatemala = notes florales et fruitées incomparables.\n\nINFUSION FROIDE NON-NÉGOCIABLE : L'eau chaude extrait l'amertume. Le froid extrait uniquement les arômes.\n\nVARIANTE THÉ : 15g Earl Grey ou Matcha — même process."
+  },
+  {
+    num: "10",
+    title: "Chiboust Moderne",
+    shortTitle: "Chiboust Moderne",
+    tag: "Saint-Honoré · Dôme",
+    desc: "Tient 24h, se brûle au chalumeau. Texture de soufflé froid, la chiboust qui ne tombe pas.",
+    fullDesc: "Tient 24h, se brûle au chalumeau, texture de soufflé froid. La chiboust qui ne tombe pas — version concours.",
+    ingredients: [
+      { name: "Crémeux vanille chaud gélatinisé (à 40°C)", amount: 350, unit: "g" },
+      { name: "Gélatine 200 bloom (dans le crémeux chaud)", amount: 4, unit: "g" },
+      { name: "Blancs d'œufs", amount: 100, unit: "g" },
+      { name: "Sucre cuit à 121°C (avec 50g eau)", amount: 200, unit: "g" },
+    ],
+    steps: [
+      { title: "Préparer le crémeux gélatinisé à 40°C", text: "Réaliser le crémeux vanille jusqu'à 84°C. Hors feu incorporer la gélatine réhydratée. Maintenir à 40°C.", timer: 0 },
+      { title: "Réaliser la meringue italienne à 40°C", text: "Cuire le sucre + eau à 121°C. Quand à 115°C, monter les blancs en texture mousseuse. Verser le sucre cuit en filet fin sur les blancs. Fouetter jusqu'à refroidissement à 40°C exactement.", timer: 480 },
+      { title: "Assembler à 40°C", text: "Les deux éléments DOIVENT être à 40°C. Incorporer 1/3 de la meringue dans le crémeux énergiquement. Puis le reste en 2 fois avec des gestes enveloppants.", timer: 0 },
+      { title: "Couler et laisser prendre", text: "Couler immédiatement dans les cercles ou dresser à la poche sur les fonds de pâte. Réserver 2h au réfrigérateur pour prise complète.", timer: 7200 },
+      { title: "Brûler au chalumeau", text: "Au moment du service, saupoudrer de sucre glace fin en couche égale. Brûler au chalumeau jusqu'à caramel doré uniforme. Servir immédiatement.", timer: 0 },
+    ],
+    notes: "CLÉ DE LA TENUE : Les deux éléments à 40°C lors de l'assemblage. Trop chaud = meringue retombe. Trop froid = gélatine fige avant incorporation.\n\nNE JAMAIS incorporer la meringue dans un crémeux froid.\n\nBRÛLER À LA COMMANDE uniquement — la croûte ramollit en 20 min."
+  },
+  {
+    num: "11",
+    title: "Crème Amande Beurre Noisette",
+    shortTitle: "Amande Beurre Noisette",
+    tag: "Galette · Tarte",
+    desc: "La frangipane classique est sèche et fade. Celle-ci est moelleuse et profondément aromatique.",
+    fullDesc: "La frangipane classique est sèche et fade. Celle-ci est moelleuse, profondément aromatique, jamais granuleuse.",
+    ingredients: [
+      { name: "Beurre AOP cuit en noisette et refroidi à 20°C", amount: 120, unit: "g" },
+      { name: "Sucre glace tamisé", amount: 120, unit: "g" },
+      { name: "Poudre d'amandes torréfiées 15 min à 160°C", amount: 120, unit: "g" },
+      { name: "Œufs entiers (2 œufs + 1 jaune)", amount: 120, unit: "g" },
+      { name: "Fécule de maïs", amount: 15, unit: "g" },
+      { name: "Praliné amandes 60%", amount: 40, unit: "g" },
+    ],
+    steps: [
+      { title: "Torréfier la poudre d'amandes", text: "Étaler la poudre d'amandes sur plaque. Torréfier 15 min à 160°C jusqu'à couleur dorée et odeur de noisette. Refroidir complètement avant utilisation. Étape non négociable.", timer: 900 },
+      { title: "Crémer beurre noisette + sucre glace", text: "Dans le batteur, crémer le beurre noisette à 20°C + sucre glace jusqu'à mélange sableux homogène. Pas plus.", timer: 0 },
+      { title: "Incorporer les œufs un par un", text: "Incorporer les œufs un par un à vitesse lente. Attendre l'absorption complète entre chaque ajout.", timer: 0 },
+      { title: "Incorporer les poudres", text: "Ajouter la poudre d'amandes torréfiée + fécule tamisés + praliné. Mélanger à la maryse jusqu'à homogénéité stricte. S'arrêter immédiatement.", timer: 0 },
+      { title: "Garnir et cuire", text: "Garnir les fonds de tarte à la poche. Cuire 170°C pendant 18-22 min. Dorée en surface mais légèrement tremblante au centre. Se raffermit en refroidissant.", timer: 1200 },
+    ],
+    notes: "TORRÉFIER LA POUDRE : Étape que 90% des pâtissiers sautent. Décuple le goût de noisette, élimine l'humidité qui rend la crème granuleuse.\n\nNE JAMAIS TROP TRAVAILLER : S'arrêter dès l'homogénéité — trop d'air fait souffler à la cuisson.\n\nConservation : 5 jours au froid cru. Congélation possible."
+  },
+  {
+    num: "12",
+    title: "Crème Anglaise Tonka",
+    shortTitle: "Anglaise Tonka",
+    tag: "Base · Glace · Sauce",
+    desc: "La fève Tonka remplace la vanille standard. Infusion froide 12h = arôme intense et complexe.",
+    fullDesc: "La fève Tonka remplace la vanille standard. Infusion froide 12h = arôme intense de vanille, amande et tabac blond.",
+    ingredients: [
+      { name: "Lait entier", amount: 250, unit: "g" },
+      { name: "Crème 35%", amount: 100, unit: "g" },
+      { name: "Fève Tonka entière râpée finement", amount: 1, unit: "" },
+      { name: "Jaunes d'œufs (5 jaunes)", amount: 100, unit: "g" },
+      { name: "Sucre", amount: 80, unit: "g" },
+    ],
+    steps: [
+      { title: "Infusion Tonka à froid 12h", text: "Râper la fève Tonka à la microplane dans lait + crème froid. Filmer et infuser 12h minimum au réfrigérateur.", timer: 43200 },
+      { title: "Blanchir les jaunes", text: "Blanchir les jaunes + sucre au fouet jusqu'à mélange mousseux. Réserver.", timer: 0 },
+      { title: "Assembler et chauffer", text: "Chauffer le mélange lait-crème-Tonka infusé à 80°C. Verser en filet sur les jaunes en fouettant. Remettre dans la casserole.", timer: 0 },
+      { title: "Cuire à 82°C", text: "Cuire à feu doux à 82°C exactement, en remuant constamment avec une maryse. L'anglaise nappe la cuillère et le trait du doigt reste net. Retirer immédiatement.", timer: 420 },
+      { title: "Chinoiser et refroidir", text: "Chinoiser dans un pichet froid. Refroidir rapidement en bain-marie glacé en remuant. Filmer au contact. Utiliser comme base de bavaroise, glace ou mousse.", timer: 600 },
+    ],
+    notes: "DOSAGE TONKA : 1 fève entière pour 350g de liquide — dosage exact. Trop = médicamenteux. Utiliser une microplane.\n\nNE JAMAIS DÉPASSER 84°C — les jaunes coagulent. Thermomètre de précision obligatoire.\n\nLA NAPPE TEST : Trait du doigt sur le dos de la cuillère doit rester net."
+  },
+  {
+    num: "13",
+    title: "Ganache Montée Ivoire Vanille Tahiti",
+    shortTitle: "Ganache Ivoire Vanille",
+    tag: "Concours · Dessert assiette",
+    desc: "La référence absolue des concours. Texture nuage blanc nacré, tenue 48h en poche.",
+    fullDesc: "La référence absolue des concours. Texture nuage blanc nacré, arôme vanille Tahiti profond, tenue parfaite 48h.",
+    ingredients: [
+      { name: "Chocolat blanc Valrhona Ivoire 35%", amount: 150, unit: "g" },
+      { name: "Crème 35% chaude", amount: 100, unit: "g" },
+      { name: "Gousses de vanille Tahiti grattées (infusion 12h)", amount: 2, unit: "" },
+      { name: "Crème 35% froide", amount: 280, unit: "g" },
+    ],
+    steps: [
+      { title: "Infusion vanille 12h dans la ganache", text: "Chauffer la crème chaude à 80°C. Verser sur le chocolat blanc fondu en 3 fois, émulsionner. Ajouter gousses + graines dans la ganache chaude. Filmer au contact. Infuser 12h au froid.", timer: 43200 },
+      { title: "Incorporer la crème froide", text: "Retirer les gousses. Ajouter la crème froide dans la ganache froide. Mélanger à la maryse. Remettre au froid 2h si encore trop fluide.", timer: 7200 },
+      { title: "Monter à vitesse moyenne", text: "Monter au fouet à vitesse MOYENNE. La ganache doit tripler de volume et devenir blanche, nacrée, texture de nuage ferme. S'arrêter dès le bec d'oiseau — 30 secondes de trop = texture granuleuse.", timer: 240 },
+      { title: "Dresser à la poche", text: "Dresser immédiatement à la poche avec douille saint-honoré ou lisse. Réserver les pièces dressées 15 min au froid avant service.", timer: 0 },
+    ],
+    notes: "POURQUOI IVOIRE 35% : Teneur en beurre de cacao suffisante pour cristalliser et tenir. Les chocolats blancs sous 30% de cacao ne tiennent pas.\n\nINFUSION 12H dans la ganache APRÈS cuisson — capture les arômes les plus volatils.\n\nVARIANTE FLEUR D'ORANGER : 8g eau de fleur d'oranger après émulsion."
+  },
+  {
+    num: "14",
+    title: "Crémeux Passion-Mangue Alphonso",
+    shortTitle: "Crémeux Passion-Mangue",
+    tag: "Insert · Exotique",
+    desc: "Texture crème brûlée tropicale, acidité passion maîtrisée, couleur solaire naturelle.",
+    fullDesc: "Insert exotique de référence. Texture crème brûlée tropicale, acidité passion maîtrisée, couleur solaire.",
+    ingredients: [
+      { name: "Purée de fruit de la passion", amount: 120, unit: "g" },
+      { name: "Purée de mangue Alphonso", amount: 80, unit: "g" },
+      { name: "Jus de citron vert frais", amount: 20, unit: "g" },
+      { name: "Œufs entiers", amount: 120, unit: "g" },
+      { name: "Sucre", amount: 80, unit: "g" },
+      { name: "Beurre doux froid en cubes", amount: 100, unit: "g" },
+      { name: "Gélatine 200 bloom (minimum)", amount: 2, unit: "g" },
+    ],
+    steps: [
+      { title: "Chauffer les purées", text: "Mélanger purée de passion + purée de mangue + jus de citron vert dans une casserole. Chauffer à 50°C.", timer: 0 },
+      { title: "Cuire à 83°C", text: "Blanchir les œufs + sucre au fouet. Verser les purées chaudes dessus. Remettre sur feu doux à 83°C en remuant constamment. La texture doit épaissir légèrement.", timer: 300 },
+      { title: "Incorporer la gélatine et refroidir à 40°C", text: "Hors du feu, incorporer la gélatine réhydratée. Laisser refroidir à 40°C exactement.", timer: 600 },
+      { title: "Émulsionner le beurre au mixeur", text: "Ajouter le beurre en cubes. Mixer au mixeur plongeant 3 min SANS lever la tête. L'émulsion doit être brillante, lisse, de couleur orange solaire intense.", timer: 180 },
+      { title: "Couler en insert et surgeler", text: "Couler dans des moules d'insert. Surgeler minimum 4h avant utilisation. Démouler surgelé et intégrer immédiatement dans l'entremets.", timer: 14400 },
+    ],
+    notes: "POURQUOI ALPHONSO : Variété la plus concentrée en arôme et sucre naturel. Équilibre l'acidité du fruit de la passion naturellement. Keitt ou Kent trop neutres.\n\nGÉLATINE AU MINIMUM (2g) : juste assez pour tenir l'insert en démoulage surgelé. Doit rester fondant à température ambiante.\n\nSURGELER 100% — ne tient pas au froid simple."
+  },
+  {
+    num: "15",
+    title: "Praliné Maison Amandes-Noisettes Piémont",
+    shortTitle: "Praliné Maison",
+    tag: "Base · Universel",
+    desc: "Texture, profondeur, amertume maîtrisée. La base de tous les grands entremets praliné.",
+    fullDesc: "Un praliné fait maison n'a rien à voir avec l'industriel. Texture, profondeur aromatique, amertume maîtrisée.",
+    ingredients: [
+      { name: "Amandes mondées", amount: 150, unit: "g" },
+      { name: "Noisettes du Piémont torréfiées", amount: 150, unit: "g" },
+      { name: "Sucre", amount: 150, unit: "g" },
+      { name: "Eau", amount: 40, unit: "g" },
+      { name: "Fleur de sel", amount: 2, unit: "g" },
+    ],
+    steps: [
+      { title: "Torréfier et émonder", text: "Torréfier amandes + noisettes 15 min à 160°C. Retirer les peaux des noisettes dans un torchon. Laisser refroidir complètement.", timer: 900 },
+      { title: "Caraméliser à 165°C", text: "Cuire sucre + eau dans une casserole à fond épais à feu moyen sans remuer jusqu'à 165°C, couleur caramel ambré profond.", timer: 600 },
+      { title: "Enrober et refroidir", text: "Verser les fruits secs tièdes sur le caramel. Enrober rapidement à la maryse. Étaler sur silpat. Ajouter la fleur de sel. Refroidir complètement à température ambiante (minimum 30 min).", timer: 1800 },
+      { title: "Mixer jusqu'à pâte liquide", text: "Casser le caramel en morceaux. Mixer au Robot-Coupe. Commencer par impulsions (10 sec on / 10 sec off) pour éviter la surchauffe. Puis mixer en continu 8-12 min jusqu'à pâte lisse et liquide brillante.", timer: 720 },
+      { title: "Stocker en pot hermétique", text: "Stocker en pot hermétique à l'abri de la lumière. Utiliser directement en pâte, ou étaler sur feuilletine pour l'insert croustillant.", timer: 0 },
+    ],
+    notes: "NOISETTES DU PIÉMONT UNIQUEMENT : Teneur en huile et arôme incomparables. Les noisettes ordinaires donnent un praliné plat. Seul ingrédient sur lequel on ne fait pas de compromis.\n\nTORRÉFIER SOI-MÊME : 15 min à 160°C → refroidir → frotter dans un torchon. Pas de noisettes pré-torréfiées.\n\nLA PÂTE PASSE PAR 3 STADES : poudre → sable → pâte liquide. Ne jamais s'arrêter au stade sable.\n\nConservation : 3 mois en pot hermétique."
+  }
+];
+
+// ── STATE ──
+let currentRecipe = 0;
+let currentServings = 1;
+let activeStep = 0;
+let stepDone = [];
+let timers = {};
+
+// ── BUILD INDEX ──
+function buildIndex() {
+  const grid = document.getElementById('recipe-grid');
+  grid.innerHTML = RECIPES.map((r, i) => `
+    <div class="recipe-card" onclick="showRecipe(${i})">
+      <div class="card-num">${r.num}</div>
+      <div class="card-title">${r.title}</div>
+      <div class="card-desc">${r.desc}</div>
+      <span class="card-tag">${r.tag}</span>
+      <span class="card-arrow">→</span>
+    </div>
+  `).join('');
+}
+
+// ── SHOW INDEX ──
+function showIndex() {
+  stopAllTimers();
+  document.getElementById('index-view').style.display = 'block';
+  document.getElementById('detail-view').style.display = 'none';
+  window.scrollTo(0, 0);
+}
+
+// ── SHOW RECIPE ──
+function showRecipe(idx) {
+  currentRecipe = idx;
+  currentServings = 1;
+  activeStep = 0;
+  stepDone = new Array(RECIPES[idx].steps.length).fill(false);
+  timers = {};
+
+  const r = RECIPES[idx];
+  document.getElementById('d-num')?.remove;
+  document.getElementById('d-num').textContent = `Recette ${r.num} / 15`;
+  document.getElementById('d-title').textContent = r.title;
+  document.getElementById('d-desc').textContent = r.fullDesc;
+
+  renderIngredients();
+  renderNotes();
+  renderSteps();
+  updateNav();
+
+  document.getElementById('index-view').style.display = 'none';
+  document.getElementById('detail-view').style.display = 'block';
+  document.getElementById('servings-val').textContent = 1;
+  window.scrollTo(0, 0);
+}
+
+// ── INGREDIENTS ──
+function renderIngredients() {
+  const r = RECIPES[currentRecipe];
+  const ul = document.getElementById('ing-list');
+  ul.innerHTML = r.ingredients.map(ing => {
+    const qty = ing.unit ? `${Math.round(ing.amount * currentServings * 10) / 10}${ing.unit}` : `× ${Math.round(ing.amount * currentServings * 10) / 10}`;
+    return `<li class="ingredient-item">
+      <span class="ing-name">${ing.name}</span>
+      <span class="ing-amount">${qty}</span>
+    </li>`;
+  }).join('');
+}
+
+function renderNotes() {
+  const r = RECIPES[currentRecipe];
+  const box = document.getElementById('notes-box');
+  const p = document.getElementById('notes-text');
+  if (r.notes) {
+    p.innerHTML = r.notes.replace(/\n\n/g, '<br><br>');
+    box.style.display = 'block';
+  } else {
+    box.style.display = 'none';
+  }
+}
+
+function changeServings(delta) {
+  currentServings = Math.max(1, Math.min(20, currentServings + delta));
+  document.getElementById('servings-val').textContent = currentServings;
+  renderIngredients();
+}
+
+// ── STEPS ──
+function renderSteps() {
+  const r = RECIPES[currentRecipe];
+  const container = document.getElementById('steps-list');
+  container.innerHTML = r.steps.map((s, i) => {
+    const isDone = stepDone[i];
+    const isActive = i === activeStep;
+    const timerHTML = s.timer > 0 ? buildTimerHTML(i, s.timer) : '';
+    return `
+      <div class="step-item ${isActive ? 'active' : ''} ${isDone ? 'done' : ''}" id="step-${i}">
+        <div class="step-header" onclick="toggleStep(${i})">
+          <div class="step-num">${isDone ? '✓' : i + 1}</div>
+          <div class="step-title-text">${s.title}</div>
+          ${s.timer > 0 ? `<span class="timer-badge">⏱ ${formatTime(s.timer)}</span>` : ''}
+        </div>
+        <div class="step-body">
+          <p>${s.text}</p>
+          ${timerHTML}
+          <button class="step-done-btn" onclick="markDone(${i})">${isDone ? '↩ Annuler' : '✓ Étape terminée'}</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function buildTimerHTML(stepIdx, totalSec) {
+  return `
+    <div class="timer-section" id="timer-section-${stepIdx}">
+      <div class="timer-label">Minuteur</div>
+      <div class="timer-display" id="timer-display-${stepIdx}">${formatTime(totalSec)}</div>
+      <div class="timer-controls">
+        <button class="timer-btn primary" onclick="startTimer(${stepIdx}, ${totalSec})">▶ Démarrer</button>
+        <button class="timer-btn" onclick="pauseTimer(${stepIdx})">⏸ Pause</button>
+        <button class="timer-btn danger" onclick="resetTimer(${stepIdx}, ${totalSec})">↺ Reset</button>
+      </div>
+      <div class="timer-progress">
+        <div class="timer-progress-bar" id="timer-bar-${stepIdx}"></div>
+      </div>
+    </div>
+  `;
+}
+
+function toggleStep(i) {
+  activeStep = i;
+  renderSteps();
+}
+
+function markDone(i) {
+  stepDone[i] = !stepDone[i];
+  if (stepDone[i] && i < RECIPES[currentRecipe].steps.length - 1) {
+    activeStep = i + 1;
+  }
+  renderSteps();
+  if (stepDone[i]) showToast('✓ Étape ' + (i + 1) + ' terminée');
+}
+
+// ── TIMER ──
+function formatTime(sec) {
+  if (sec >= 3600) {
+    const h = Math.floor(sec / 3600);
+    const m = Math.floor((sec % 3600) / 60);
+    return `${h}h${m.toString().padStart(2, '0')}`;
+  }
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+}
+
+function startTimer(stepIdx, totalSec) {
+  if (timers[stepIdx]?.interval) clearInterval(timers[stepIdx].interval);
+  const startRemaining = timers[stepIdx]?.remaining ?? totalSec;
+  timers[stepIdx] = { remaining: startRemaining, total: totalSec, interval: null };
+  
+  timers[stepIdx].interval = setInterval(() => {
+    timers[stepIdx].remaining--;
+    const display = document.getElementById(`timer-display-${stepIdx}`);
+    const bar = document.getElementById(`timer-bar-${stepIdx}`);
+    if (display) display.textContent = formatTime(timers[stepIdx].remaining);
+    if (bar) {
+      const pct = ((totalSec - timers[stepIdx].remaining) / totalSec) * 100;
+      bar.style.width = pct + '%';
+    }
+    if (timers[stepIdx].remaining <= 0) {
+      clearInterval(timers[stepIdx].interval);
+      if (display) display.textContent = '00:00';
+      if (bar) bar.style.width = '100%';
+      // Notification sonore
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        [0, 200, 400].forEach(delay => {
+          setTimeout(() => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.frequency.value = 880;
+            gain.gain.setValueAtTime(0.3, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+            osc.start(ctx.currentTime);
+            osc.stop(ctx.currentTime + 0.3);
+          }, delay);
+        });
+      } catch(e) {}
+      showToast('⏱ Minuteur terminé — Étape ' + (stepIdx + 1));
+    }
+  }, 1000);
+}
+
+function pauseTimer(stepIdx) {
+  if (timers[stepIdx]?.interval) {
+    clearInterval(timers[stepIdx].interval);
+    timers[stepIdx].interval = null;
+  }
+}
+
+function resetTimer(stepIdx, totalSec) {
+  pauseTimer(stepIdx);
+  timers[stepIdx] = { remaining: totalSec, total: totalSec, interval: null };
+  const display = document.getElementById(`timer-display-${stepIdx}`);
+  const bar = document.getElementById(`timer-bar-${stepIdx}`);
+  if (display) display.textContent = formatTime(totalSec);
+  if (bar) bar.style.width = '0%';
+}
+
+function stopAllTimers() {
+  Object.keys(timers).forEach(k => {
+    if (timers[k]?.interval) clearInterval(timers[k].interval);
+  });
+  timers = {};
+}
+
+// ── NAVIGATION ──
+function navigateRecipe(dir) {
+  const next = currentRecipe + dir;
+  if (next >= 0 && next < RECIPES.length) showRecipe(next);
+}
+
+function updateNav() {
+  document.getElementById('prev-btn').disabled = currentRecipe === 0;
+  document.getElementById('next-btn').disabled = currentRecipe === RECIPES.length - 1;
+}
+
+// ── TOAST ──
+let toastTimeout;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── INIT ──
+buildIndex();
+</script>
+</body>
+</html>
